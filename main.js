@@ -6,13 +6,17 @@ var roles = require('roles');
 var healer = require('healer');
 var hostileTarget = require('hostileTarget')
 
+// Assign roles
 roles();
 
+// Find global target
 hostileTarget();
 
+// Spawn creeps
 if (!Game.spawns.Spawn1.spawning)
   spawn(Game.spawns.Spawn1);
 
+// Apply role
 for (var name in Game.creeps)
 {
   var creep = Game.creeps[name];

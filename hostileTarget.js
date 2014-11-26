@@ -1,6 +1,11 @@
+/*
+ *  This module find and save a global target for guardians
+ */
+
 module.exports = function ()
 {
 
+  // If no target set
   if (!Memory.target)
   {
     var target = Game.spawns.Spawn1.pos.findNearest(Game.HOSTILE_CREEPS);
@@ -8,15 +13,14 @@ module.exports = function ()
     if (!target)
       return;
 
-    // for (var i in target)
-    //   console.log(i, target[i]);
-    console.log('Target !', target.id);
     Memory.target = target.id;
   }
+  // If target set, check if alive
   else
   {
     var target = Game.spawns.Spawn1.room.find(Game.HOSTILE_CREEPS, {filter: {id: Memory.target}});
 
+    // If not alive, reset global target
     if (!target.length)
     {
       console.log('Dead', Memory.target);
@@ -24,18 +28,4 @@ module.exports = function ()
     }
 
   }
-
-  // console.log('Target ?', target);
-  // if (target)
-  // {
-  //   Memory.target = target.id;
-  //   for (var i in target)
-  //   {
-  //     console.log(i, target[i]);
-  //   }
-  //   console.log('Target !', Memory.target);
-  // }
-  // else
-  //   Memory.target = null;
-
-}
+};

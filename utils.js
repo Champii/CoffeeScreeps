@@ -1,69 +1,75 @@
+/*
+*  Set of helper functions
+*/
+
+// Theses methods return creep body from actual game level
 module.exports.getHarvesterBody = function (lvl)
 {
-    var body = [Game.MOVE, Game.MOVE, Game.CARRY, Game.CARRY, Game.WORK];
-    var cost = 220;
+  var body = [Game.MOVE, Game.MOVE, Game.CARRY, Game.CARRY, Game.WORK];
+  var cost = 220;
 
-    for (var i = 0; i < lvl; i++)
-    {
-        body.push(Game.WORK);
-        cost += 20;
-    }
+  for (var i = 0; i < lvl; i++)
+  {
+    body.push(Game.WORK);
+    cost += 20;
+  }
 
-    return({body: body, cost: cost});
+  return({body: body, cost: cost});
 }
 module.exports.getGuardBody = function (lvl)
 {
-    var body = [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.MOVE, Game.ATTACK];
-    var cost = 220;
+  var body = [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.MOVE, Game.ATTACK];
+  var cost = 220;
 
-    for (var i = 0; i < lvl; i++)
-    {
-        body.push(Game.ATTACK);
-        cost += 100;
-    }
+  for (var i = 0; i < lvl; i++)
+  {
+    body.push(Game.ATTACK);
+    cost += 100;
+  }
 
-    return({body: body, cost: cost});
+  return({body: body, cost: cost});
 }
 
 module.exports.getBuilderBody = function (lvl)
 {
-    var body = [Game.MOVE, Game.MOVE, Game.CARRY, Game.CARRY, Game.WORK];
-    var cost = 220;
+  var body = [Game.MOVE, Game.MOVE, Game.CARRY, Game.CARRY, Game.WORK];
+  var cost = 220;
 
-    for (var i = 0; i < lvl; i++)
-    {
-        body.push(Game.CARRY);
-        cost += 50;
-    }
+  for (var i = 0; i < lvl; i++)
+  {
+    body.push(Game.CARRY);
+    cost += 50;
+  }
 
-    return({body: body, cost: cost});
+  return({body: body, cost: cost});
 }
 
 module.exports.getHealerBody = function (lvl)
 {
-    var body = [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.HEAL, Game.MOVE];
-    var cost = 310;
+  var body = [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.HEAL, Game.MOVE];
+  var cost = 310;
 
-    for (var i = 0; i < lvl; i++)
-    {
-        body.push(Game.HEAL);
-        cost += 200;
-    }
+  for (var i = 0; i < lvl; i++)
+  {
+    body.push(Game.HEAL);
+    cost += 200;
+  }
 
-    return({body: body, cost: cost});
+  return({body: body, cost: cost});
 }
 
+// This function count how many creep their is for a given type.
+// If no type given, it returns the global creep count
 module.exports.countCreep = function (type)
 {
-    var creeps = Game.spawns.Spawn1.room.find(Game.MY_CREEPS);
-    if (type == undefined)
-        return creeps.length;
+  var creeps = Game.spawns.Spawn1.room.find(Game.MY_CREEPS);
+  if (type == undefined)
+    return creeps.length;
 
-    var i = 0;
-    for (var i in creeps)
-        if (creeps[i].name[0] == type)
-            i++;
+  var i = 0;
+  for (var i in creeps)
+    if (creeps[i].name[0] == type)
+      i++;
 
-    console.log(type, i);
-    return i;
+  return i;
 };
