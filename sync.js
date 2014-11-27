@@ -81,22 +81,22 @@ var clientSide = function() {
 // Set up watch on directory changes
 var modules = {};
 var writeListener;
-// fs.readdirSync('.').forEach(function(file) {
-//   if (file !== 'sync.js' && /\.js$/.test(file)) {
-//     modules[file.replace(/\.js$/, '')] = fs.readFileSync(file, 'utf8');
-//   }
-// });
-var mainFile = 'main.js'
-modules[mainFile.replace(/\.js$/, '')] = fs.readFileSync(mainFile, 'utf8');
+fs.readdirSync('./build').forEach(function(file) {
+  if (file !== 'sync.js' && /\.js$/.test(file)) {
+    modules[file.replace(/\.js$/, '')] = fs.readFileSync('./build/' + file, 'utf8');
+  }
+});
+// var mainFile = 'main.js'
+// modules[mainFile.replace(/\.js$/, '')] = fs.readFileSync(mainFile, 'utf8');
 
 fs.watch(__dirname, function(ev, file) {
   console.log('File changed : ', file)
-  if (file !== 'sync.js' &&  file !== 'main.js' && /\.coffee$/.test(file)) {
+  if (file !== 'sync.js' &&  /\.coffee$/.test(file)) {
     exec('./compile.sh', function (err, stdout, stderr) {
       if (err) return console.error('Error', err);
 
       console.log('REFRESHING', stdout, stderr);
-      modules[mainFile.replace(/\.js$/, '')] = fs.readFileSync(mainFile, 'utf8');
+      modules[file.replace(/\.coffee$/, '')] = fs.readFileSync('./build/' + file.replace(/\.coffee$/, '.js'), 'utf8');
       if (writeListener) {
         process.nextTick(writeListener);
         writeListener = undefined;

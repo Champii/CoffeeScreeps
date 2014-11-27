@@ -1,3 +1,4 @@
+
 class Spawner
 
   constructor: (@name) ->
@@ -15,7 +16,6 @@ class Spawner
 
     if not Memory.nextCreepIdx?
       Memory.nextCreepIdx = 0
-
 
     nbT = Creep.CountCreeps 'transporter'
     nbM = Creep.CountCreeps 'miner'
@@ -40,3 +40,6 @@ class Spawner
     else
       false
 
+module.exports = Spawner
+Creep = require('Creep')()
+Body = require('Body')()

@@ -1,39 +1,48 @@
-class Creep extends Body
+module.exports = ->
+  class Creep extends Body
 
-  constructor: ->
-    super()
+    constructor: ->
+      super()
 
-    @_creep = Game.creeps[@name]
+      @_creep = Game.creeps[@name]
 
-    @Work()
+      @Work()
 
-  MoveTo: (target) ->
-    if @_creep.pos.isNearTo target
-      return false
-    if @_creep.moveTo target < 0
-      return false
+    MoveTo: (target) ->
+      if @_creep.pos.isNearTo target
+        return false
+      if @_creep.moveTo target < 0
+        return false
 
-    true
+      true
 
 
-  @CountCreeps: (type) ->
-    creeps = Game.spawns.Spawn1.room.find Game.MY_CREEPS
+    @CountCreeps: (type) ->
+      creeps = Game.spawns.Spawn1.room.find Game.MY_CREEPS
 
-    if not type
-      return creeps.length
+      if not type
+        return creeps.length
 
-    i = 0
-    for creep in creeps when creep.name[..-1] is type
-      i++
+      i = 0
+      for creep in creeps when creep.name[..-1] is type
+        i++
 
-    i
+      i
 
-  @Get: (name, lvl) ->
-    if name[..-2] is 'miner'
-      new Miner name, lvl
-    else if name[..-2] is 'transporter'
-      new Transporter name, lvl
-    else if name[..-2] is 'guard'
-      new Guard name, lvl
-    else if name[..-2] is 'healer'
-      new Healer name, lvl
+    @Get: (name, lvl) ->
+      type = name[0]
+      if type is 'm'
+        Miner = require('Miner')
+        new Miner name, lvl
+      else if type is 't'
+        Transporter = require('Transporter')
+        new Transporter name, lvl
+      else if type is 'g'
+        Guard = require('Guard')
+        new Guard name, lvl
+      else if type is 'h'
+        Healer = require('Guard')
+        new Healer name, lvl
+
+
+Body = require('Body')()

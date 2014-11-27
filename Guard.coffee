@@ -1,6 +1,6 @@
 class Guard extends Creep
 
-  @::type = 'guard'
+  @SetType 'guard'
 
   constructor: (@name, @lvl) ->
     @type = 'guard'
@@ -22,3 +22,6 @@ class Guard extends Creep
 
     else
       @MoveTo @_creep.pos.findNearest Game.MY_SPAWNS
+
+module.exports = Guard
+Creep = require('Creep')()

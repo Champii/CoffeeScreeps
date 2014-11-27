@@ -1,6 +1,6 @@
 class Miner extends Creep
 
-  @::type = 'miner'
+  @SetType 'miner'
 
   constructor: (@name, @lvl) ->
     @type = 'miner'
@@ -12,3 +12,6 @@ class Miner extends Creep
 
     if not @MoveTo source
       @_creep.harvest source
+
+module.exports = Miner
+Creep = require('Creep')()

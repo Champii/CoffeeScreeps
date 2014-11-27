@@ -1,6 +1,6 @@
 class Healer extends Creep
 
-  @::type = 'healer'
+  @SetType 'healer'
 
   constructor: (@name, @lvl) ->
     @type = 'healer'
@@ -8,3 +8,6 @@ class Healer extends Creep
     super()
 
   Work: ->
+
+module.exports = Healer
+Creep = require('Creep')()

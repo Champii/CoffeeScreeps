@@ -1,6 +1,7 @@
+
 class Transporter extends Creep
 
-  @::type = 'transporter'
+  @SetType 'transporter'
 
   constructor: (@name, @lvl) ->
     @type = 'transporter'
@@ -18,3 +19,6 @@ class Transporter extends Creep
     else
       spawn = @_creep.pos.findNearest Game.MY_SPAWNS
       @_cree.moveTo spawn
+
+module.exports = Transporter
+Creep = require('Creep')()

@@ -1,3 +1,6 @@
+Spawner = require 'Spawner'
+Creep = require('Creep')()
+
 class Main
 
   constructor: ->
@@ -5,7 +8,7 @@ class Main
     @InitLvl()
     @InitCreeps()
 
-    # @Dispatch ()
+    # @Dispatch()
 
   InitLvl: ->
 
