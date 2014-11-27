@@ -1,4 +1,6 @@
-class Miner extends Creep
+Creep = require('Creep')
+
+class Miner extends Creep()
 
   @SetType 'miner'
 
@@ -14,4 +16,3 @@ class Miner extends Creep
       @_creep.harvest source
 
 module.exports = Miner
-Creep = require('Creep')()

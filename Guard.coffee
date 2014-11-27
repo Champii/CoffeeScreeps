@@ -1,4 +1,6 @@
-class Guard extends Creep
+Creep = require('Creep')
+
+class Guard extends Creep()
 
   @SetType 'guard'
 
@@ -24,4 +26,3 @@ class Guard extends Creep
       @MoveTo @_creep.pos.findNearest Game.MY_SPAWNS
 
 module.exports = Guard
-Creep = require('Creep')()

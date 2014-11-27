@@ -1,5 +1,6 @@
+Creep = require('Creep')
 
-class Transporter extends Creep
+class Transporter extends Creep()
 
   @SetType 'transporter'
 
@@ -21,4 +22,3 @@ class Transporter extends Creep
       @_cree.moveTo spawn
 
 module.exports = Transporter
-Creep = require('Creep')()

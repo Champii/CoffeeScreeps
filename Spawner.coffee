@@ -1,4 +1,3 @@
-
 class Spawner
 
   constructor: (@name) ->

@@ -1,4 +1,6 @@
-class Healer extends Creep
+Creep = require('Creep')
+
+class Healer extends Creep()
 
   @SetType 'healer'
 
@@ -10,4 +12,3 @@ class Healer extends Creep
   Work: ->
 
 module.exports = Healer
-Creep = require('Creep')()

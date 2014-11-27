@@ -1,5 +1,5 @@
 module.exports = ->
-  class Creep extends Body
+  class Creep extends Body()
 
     constructor: ->
       super()
@@ -45,4 +45,4 @@ module.exports = ->
         new Healer name, lvl
 
 
-Body = require('Body')()
+Body = require('Body')
