@@ -2,23 +2,28 @@ Creep = require('Creep')
 
 class Transporter extends Creep()
 
-  @SetType 'transporter'
+  @SetType 'Transporter'
 
   constructor: (@name, @lvl) ->
-    @type = 'transporter'
+    @type = 'Transporter'
 
     super()
 
   Work: ->
-    source = @_creep.pos.findNearest Game.DROPPED_ENERGY
 
     if @_creep.energy < @_creep.energyCapacity
+      source = @_creep.pos.findNearest Game.DROPPED_ENERGY
+
       if not @_creep.pos.isNearTo source
-        @_creep.moveTo source
+        @MoveTo source
       else
         @_creep.pickup source
     else
       spawn = @_creep.pos.findNearest Game.MY_SPAWNS
-      @_cree.moveTo spawn
+      if not spawn?
+        return
+
+      if not @MoveTo spawn
+        @_creep.transferEnergy spawn
 
 module.exports = Transporter

@@ -3,24 +3,20 @@ module.exports = ->
 
     constructor: ->
 
-      @body = []
-      @nextBody = []
+      {body: @body, next: @nextBody} = Body.GetBody @type
 
-      Body.GetBody()
-      # {@body, @nextBody} = Body.GetBody()
+      for i in [0...@lvl]
+        @body.push @nextBody
 
-      # console.log @body
-      # for i in [0...@lvl]
-      #   @body.push @nextBody
-
-      # @cost = Body.GetBodyCost()
+      @cost = Body.GetBodyCost @type
 
     @SetType: (type) =>
       @type = type
 
-    @GetBodyCost: =>
-      if not @type
-        return -1
+    @GetBodyCost: (type) =>
+      t = @type
+      if not t
+       t = type
 
       bodyCosts = {}
       bodyCosts[Game.MOVE] = 50
@@ -32,7 +28,8 @@ module.exports = ->
       bodyCosts[Game.TOUGH] = 5
 
       res = 0
-      for i in Body.GetBody()
+
+      for i in Body.GetBody(t).next
         res += bodyCosts[i]
 
       res
@@ -43,19 +40,21 @@ module.exports = ->
         t = type
 
       bodies =
-        miner:
+        Miner:
           body: [Game.MOVE, Game.WORK, Game.WORK, Game.WORK, Game.WORK]
           next: [Game.WORK]
-        transporter:
+        Transporter:
           body: [Game.MOVE, Game.MOVE, Game.CARRY, Game.CARRY, Game.CARRY]
           next: [Game.CARRY]
-        guard:
-          body: [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.MOVE, Game.ATTACK]
-          next: [Game.ATTACK]
-        healer:
-          body: [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.HEAL, Game.MOVE]
-          next: [Game.HEAL]
+        Guard:
+          body: [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.ATTACK, Game.ATTACK]
+          next: [Game.MOVE, Game.ATTACK]
+        Healer:
+          body: [Game.TOUGH, Game.TOUGH, Game.HEAL, Game.HEAL, Game.MOVE]
+          next: [Game.MOVE, Game.HEAL]
+        Archer:
+          body: [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.RANGED_ATTACK, Game.RANGED_ATTACK]
+          next: [Game.MOVE, Game.RANGED_ATTACK]
 
-      console.log 'type', t
       bodies[t]
 

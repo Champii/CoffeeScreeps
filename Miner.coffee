@@ -2,15 +2,15 @@ Creep = require('Creep')
 
 class Miner extends Creep()
 
-  @SetType 'miner'
+  @SetType 'Miner'
 
   constructor: (@name, @lvl) ->
-    @type = 'miner'
+    @type = 'Miner'
 
     super()
 
   Work: ->
-    source = @_creep.pos.findNearest Game.SOURCES_ACTIVE
+    source = Game.spawns.Spawn1.pos.findNearest Game.SOURCES_ACTIVE
 
     if not @MoveTo source
       @_creep.harvest source
