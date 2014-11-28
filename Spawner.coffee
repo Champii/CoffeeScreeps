@@ -21,10 +21,28 @@ class Spawner
     order = [
       'Miner'
       'Transporter'
-      'Guard'
-      'Healer'
       'Archer'
+      'Healer'
+      'Guard'
     ]
+
+    maxPop = [
+      2
+      2
+      3
+      3
+      3
+    ]
+
+    count = 0
+    while Creep.CountCreeps(order[Memory.nextCreepIdx]) >= maxPop[Memory.nextCreepIdx]
+      Memory.nextCreepIdx++
+      if Memory.nextCreepIdx >= order.length
+        Memory.nextCreepIdx = 0
+        count++
+        # Avoid infinite loop
+        if count >= 2
+          return
 
     if not @_spawn.spawning
       if @HasEnergy(order[Memory.nextCreepIdx]) && @Spawn(order[Memory.nextCreepIdx])

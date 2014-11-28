@@ -28,6 +28,15 @@ module.exports = ->
       i
 
     @Get: (name, lvl) ->
-      new (require(name[..-2]))(name, lvl)
+      new (require(@GetNameType(name)))(name, lvl)
+
+    @GetNameType: (name) ->
+      isNumeric = (n) -> !isNaN(parseFloat(n)) and isFinite(n)
+      for c, i in name
+        # console.log c, i
+        if isNumeric c
+          # console.log name[0...i]
+          return name[0...i]
+
 
 Body = require('Body')

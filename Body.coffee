@@ -44,16 +44,16 @@ module.exports = ->
           body: [Game.MOVE, Game.WORK, Game.WORK, Game.WORK, Game.WORK]
           next: [Game.WORK]
         Transporter:
-          body: [Game.MOVE, Game.MOVE, Game.CARRY, Game.CARRY, Game.CARRY]
+          body: [Game.MOVE, Game.MOVE, Game.MOVE, Game.CARRY, Game.CARRY]
           next: [Game.CARRY]
         Guard:
-          body: [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.ATTACK, Game.ATTACK]
+          body: [Game.TOUGH, Game.MOVE, Game.ATTACK, Game.ATTACK, Game.ATTACK]
           next: [Game.MOVE, Game.ATTACK]
         Healer:
           body: [Game.TOUGH, Game.TOUGH, Game.HEAL, Game.HEAL, Game.MOVE]
           next: [Game.MOVE, Game.HEAL]
         Archer:
-          body: [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.RANGED_ATTACK, Game.RANGED_ATTACK]
+          body: [Game.MOVE, Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.RANGED_ATTACK]
           next: [Game.MOVE, Game.RANGED_ATTACK]
 
       bodies[t]

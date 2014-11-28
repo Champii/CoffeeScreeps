@@ -1,6 +1,6 @@
 Spawner = require 'Spawner'
 Creep = require('Creep')()
-Defender = require 'Guard'
+Defender = require('Defender')()
 
 class Main
 
