@@ -4,33 +4,32 @@ class Healer extends Creep()
 
   @SetType 'Healer'
 
-  constructor: (@name, @lvl) ->
-    @type = 'Healer'
+  Tick: ->
+    target = @GetTargetToHeal() || @GetTargetToFollow()
 
-    super()
+    if target && @_creep.getActiveBodyparts Game.HEAL
+      @MoveTo target
+      @Work target
+    else
+      @GoHome()
 
-  Work: ->
+  GetTargetToHeal: ->
     targets = @_creep.room.find Game.MY_CREEPS,
       filter: (item) =>
         item.hits < item.hitsMax && item.id != @_creep.id
 
-    for t in targets when Creep().GetNameType(t) is 'Guard' or Creep().GetNameType(t) is 'Archer'
+    for t in targets when Creep().GetNameType(t) in ['Guard', 'Archer', 'Hybrid']
       target = t
+      break
 
     if not target?
       target = targets[0]
 
-    if target && @_creep.getActiveBodyparts Game.HEAL
-      if not @MoveTo target
-        @_creep.heal target
-    else
-      target = @_creep.pos.findNearest Game.MY_CREEPS,
-        filter: (item) ->
-          Creep().GetNameType(item.name) is 'Guard' or Creep().GetNameType(item.name) is 'Archer'
+    target
 
-      if not target
-        target = @_creep.pos.findNearest Game.MY_SPAWNS
-
-      @MoveTo target
+  GetTargetToFollow: ->
+    @_creep.pos.findNearest Game.MY_CREEPS,
+      filter: (item) ->
+        Creep().GetNameType(item.name) in ['Guard', 'Archer', 'Hybrid']
 
 module.exports = Healer

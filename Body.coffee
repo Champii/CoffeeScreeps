@@ -12,11 +12,10 @@ module.exports = ->
 
     @SetType: (type) =>
       @type = type
+      @::type = type
 
     @GetBodyCost: (type) =>
-      t = @type
-      if not t
-       t = type
+      t = @type || type
 
       bodyCosts = {}
       bodyCosts[Game.MOVE] = 50
@@ -35,25 +34,26 @@ module.exports = ->
       res
 
     @GetBody: (type) =>
-      t = @type
-      if not t?
-        t = type
+      t = @type || type
 
       bodies =
         Miner:
-          body: [Game.MOVE, Game.WORK, Game.WORK, Game.WORK, Game.WORK]
+          body: [Game.MOVE, Game.MOVE, Game.WORK, Game.WORK, Game.WORK]
           next: [Game.WORK]
         Transporter:
-          body: [Game.MOVE, Game.MOVE, Game.MOVE, Game.CARRY, Game.CARRY]
+          body: [Game.MOVE, Game.MOVE, Game.CARRY, Game.CARRY, Game.CARRY]
           next: [Game.CARRY]
         Guard:
-          body: [Game.TOUGH, Game.MOVE, Game.ATTACK, Game.ATTACK, Game.ATTACK]
+          body: [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.MOVE, Game.ATTACK]
           next: [Game.MOVE, Game.ATTACK]
         Healer:
-          body: [Game.TOUGH, Game.TOUGH, Game.HEAL, Game.HEAL, Game.MOVE]
+          body: [Game.TOUGH, Game.HEAL, Game.MOVE, Game.MOVE, Game.MOVE]
           next: [Game.MOVE, Game.HEAL]
         Archer:
-          body: [Game.MOVE, Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.RANGED_ATTACK]
+          body: [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.MOVE, Game.RANGED_ATTACK]
+          next: [Game.MOVE, Game.RANGED_ATTACK]
+        Hybrid:
+          body: [Game.TOUGH, Game.MOVE, Game.MOVE, Game.ATTACK, Game.RANGED_ATTACK]
           next: [Game.MOVE, Game.RANGED_ATTACK]
 
       bodies[t]

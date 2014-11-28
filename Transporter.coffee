@@ -1,35 +1,43 @@
 Creep = require('Creep')
 
+Memory.energyTarget? || Memory.energyTarget = null
+
 class Transporter extends Creep()
 
   @SetType 'Transporter'
 
-  constructor: (@name, @lvl) ->
-    @type = 'Transporter'
-
-    super()
-
-  Work: ->
-
+  Tick: ->
     if @_creep.energy < @_creep.energyCapacity
-      sources = @_creep.room.find Game.DROPPED_ENERGY
-      target = sources[0]
-      for source in sources
-        if source.energy > target.energy
-          target = source
+      if not Memory.energyTarget?
+        if not @FindEnergy()
+          return @GoHome()
 
-      # source = @_creep.pos.findNearest Game.DROPPED_ENERGY
+      if not (target = @DeserializeTarget Memory.energyTarget, Game.DROPPED_ENERGY)
+        Memory.energyTarget = null
+        return @GoHome()
 
-      if not @_creep.pos.isNearTo target
-        @MoveTo target
-      else
-        @_creep.pickup target
+      @MoveTo target
+      @Work target
     else
-      spawn = @_creep.pos.findNearest Game.MY_SPAWNS
-      if not spawn?
-        return
+      @GoHome()
 
-      if not @MoveTo spawn
-        @_creep.transferEnergy spawn
+  FindEnergy: ->
+    targets = Game.spawns.Spawn1.pos.findInRange Game.DROPPED_ENERGY, 8
+
+    if not targets.length
+      return Memory.energyTarget = null
+
+    target = {energy: 0}
+    for t in targets
+      if t.energy > target.energy
+        target = t
+
+    if target?
+      Memory.energyTarget = target.id
+    else
+      Memory.energyTarget = null
+
+  GoHome: ->
+    @_creep.transferEnergy super()
 
 module.exports = Transporter

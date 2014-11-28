@@ -1,11 +1,22 @@
 module.exports = ->
   class Creep extends Body()
 
-    constructor: ->
+    constructor: (@name, @lvl) ->
       super()
 
       @_creep = Game.creeps[@name]
-      @Work()
+      @Tick()
+
+    Work: (target) ->
+      if not target?
+        return
+
+      if @_creep.getActiveBodyparts Game.HEAL
+        @_creep.heal target
+      if @_creep.getActiveBodyparts(Game.WORK) and target.energy?
+        @_creep.harvest target
+      if @_creep.getActiveBodyparts(Game.CARRY) and target.energy?
+        @_creep.pickup target
 
     MoveTo: (target) ->
       if @_creep.pos.isNearTo target
@@ -14,6 +25,22 @@ module.exports = ->
         return false
 
       true
+
+    GoHome: ->
+      target = @_creep.pos.findNearest Game.MY_SPAWNS
+      @MoveTo target
+      target
+
+    DeserializeTarget: (targetId, targetType) ->
+      target = @_creep.room.find(targetType,
+        filter:
+          id: targetId
+      )[0]
+
+      if not target
+        return false
+
+      target
 
     @CountCreeps: (type) ->
       creeps = Game.spawns.Spawn1.room.find Game.MY_CREEPS
@@ -33,9 +60,7 @@ module.exports = ->
     @GetNameType: (name) ->
       isNumeric = (n) -> !isNaN(parseFloat(n)) and isFinite(n)
       for c, i in name
-        # console.log c, i
         if isNumeric c
-          # console.log name[0...i]
           return name[0...i]
 
 

@@ -1,39 +1,13 @@
-#Set memory to know next creep name
-if not Memory.Miner?
-  Memory.Miner = 0
-if not Memory.Transporter?
-  Memory.Transporter = 0
-if not Memory.Guard?
-  Memory.Guard = 0
-if not Memory.Healer?
-  Memory.Healer = 0
-if not Memory.Archer?
-  Memory.Archer = 0
-
-if not Memory.nextCreepIdx?
-  Memory.nextCreepIdx = 0
 
 class Spawner
 
   constructor: (@name) ->
     @_spawn = Game.spawns[@name]
 
-    order = [
-      'Miner'
-      'Transporter'
-      'Archer'
-      'Healer'
-      'Guard'
-    ]
+    if @ModeratePopulation()
+      @TrySpawn()
 
-    maxPop = [
-      2
-      2
-      3
-      3
-      3
-    ]
-
+  ModeratePopulation: ->
     count = 0
     while Creep.CountCreeps(order[Memory.nextCreepIdx]) >= maxPop[Memory.nextCreepIdx]
       Memory.nextCreepIdx++
@@ -42,8 +16,10 @@ class Spawner
         count++
         # Avoid infinite loop
         if count >= 2
-          return
+          return false
+    true
 
+  TrySpawn: ->
     if not @_spawn.spawning
       if @HasEnergy(order[Memory.nextCreepIdx]) && @Spawn(order[Memory.nextCreepIdx])
         Memory.nextCreepIdx++
@@ -60,6 +36,36 @@ class Spawner
   HasEnergy: (type) ->
     Body.GetBodyCost(type) <= @_spawn.energy
 
+
+#Set memory to know next creep name
+Memory.Miner?       || Memory.Miner = 0
+Memory.Transporter? || Memory.Transporter = 0
+Memory.Guard?       || Memory.Guard = 0
+Memory.Healer?      || Memory.Healer = 0
+Memory.Archer?      || Memory.Archer = 0
+Memory.Hybrid?      || Memory.Hybrid = 0
+
+Memory.nextCreepIdx? || Memory.nextCreepIdx = 0
+
+order = [
+  'Miner'
+  'Transporter'
+  'Hybrid'
+  'Healer'
+  # 'Guard'
+  # 'Archer'
+]
+
+maxPop = [
+  2
+  1
+  10
+  10
+  # 3
+  # 3
+]
+
 module.exports = Spawner
 Creep = require('Creep')()
 Body = require('Body')()
+

@@ -4,15 +4,12 @@ class Miner extends Creep()
 
   @SetType 'Miner'
 
-  constructor: (@name, @lvl) ->
-    @type = 'Miner'
+  Tick: ->
+    target = Game.spawns.Spawn1.pos.findNearest(Game.SOURCES)
+    if not target.energy
+      target = Game.flags.Alternative || Game.spawns.Spawn1.pos.findNearest Game.SOURCES_ACTIVE
 
-    super()
-
-  Work: ->
-    source = Game.spawns.Spawn1.pos.findNearest Game.SOURCES_ACTIVE
-
-    if not @MoveTo source
-      @_creep.harvest source
+    @MoveTo target
+    @Work target
 
 module.exports = Miner
