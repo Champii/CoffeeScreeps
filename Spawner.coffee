@@ -36,33 +36,38 @@ class Spawner
   HasEnergy: (type) ->
     Body.GetBodyCost(type) <= @_spawn.energy
 
-
 #Set memory to know next creep name
-Memory.Miner?       || Memory.Miner = 0
-Memory.Transporter? || Memory.Transporter = 0
-Memory.Guard?       || Memory.Guard = 0
-Memory.Healer?      || Memory.Healer = 0
-Memory.Archer?      || Memory.Archer = 0
-Memory.Hybrid?      || Memory.Hybrid = 0
+Memory.Miner?             || Memory.Miner = 0
+Memory.Transporter?       || Memory.Transporter = 0
+Memory.Guard?             || Memory.Guard = 0
+Memory.Healer?            || Memory.Healer = 0
+Memory.Archer?            || Memory.Archer = 0
+Memory.Hybrid?            || Memory.Hybrid = 0
+Memory.Engineer?          || Memory.Engineer = 0
+Memory.SmallTransporter?  || Memory.SmallTransporter = 0
 
-Memory.nextCreepIdx? || Memory.nextCreepIdx = 0
+Memory.nextCreepIdx?      || Memory.nextCreepIdx = 0
 
 order = [
+  # 'Engineer'
   'Miner'
   'Transporter'
-  'Hybrid'
+  'Guard'
+  'Guard'
   'Healer'
-  # 'Guard'
-  # 'Archer'
+  'Archer'
+  'SmallTransporter'
 ]
 
 maxPop = [
+  # 2
   2
-  1
+  4
   10
-  10
-  # 3
-  # 3
+  5 #
+  5
+  5
+  4 #
 ]
 
 module.exports = Spawner

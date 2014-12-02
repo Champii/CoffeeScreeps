@@ -1,15 +1,35 @@
-Creep = require('Creep')
+_ = require 'lodash'
+
+Creep = require 'Creep'
 
 class Miner extends Creep()
 
   @SetType 'Miner'
 
-  Tick: ->
-    target = Game.spawns.Spawn1.pos.findNearest(Game.SOURCES)
-    if not target.energy
-      target = Game.flags.Alternative || Game.spawns.Spawn1.pos.findNearest Game.SOURCES_ACTIVE
+  constructor: (@name, @lvl) ->
+    super()
 
-    @MoveTo target
-    @Work target
+    @_creep.memory.sourceId? || @_creep.memory.sourceId = 0
+
+  Tick: ->
+    if @FindSource()
+      @MoveTo @source
+      @Work @source
+
+  FindSource: ->
+    if @_creep.memory.sourceId
+      @source = Game.getObjectById @_creep.memory.sourceId
+    else
+      @source = Game.spawns.Spawn1.pos.findNearest Game.SOURCES_ACTIVE,
+        filter: (item) ->
+          item.id not in _.chain Game.creeps
+                  .filter (creep) -> creep.memory.sourceId?
+                  .map (creep) -> creep.memory.sourceId
+                  .value()
+
+    if @source?
+      @_creep.memory.sourceId = @source.id
+    else
+      @_creep.memory.sourceId = 0
 
 module.exports = Miner

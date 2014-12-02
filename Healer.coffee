@@ -1,11 +1,23 @@
-Creep = require('Creep')
+_ = require 'lodash'
 
-class Healer extends Creep()
+Defender = require 'Defender'
+Creep = require 'Creep'
+
+class Healer extends Defender()
 
   @SetType 'Healer'
 
+  constructor: (@name, @lvl) ->
+    super()
+
+    @_creep.memory.targetId? || @_creep.memory.targetId = 0
+
   Tick: ->
     target = @GetTargetToHeal() || @GetTargetToFollow()
+
+    # enemy = @GetTargetToAttack()
+    # if enemy?
+    #   @Attack enemy
 
     if target && @_creep.getActiveBodyparts Game.HEAL
       @MoveTo target
@@ -14,22 +26,29 @@ class Healer extends Creep()
       @GoHome()
 
   GetTargetToHeal: ->
-    targets = @_creep.room.find Game.MY_CREEPS,
-      filter: (item) =>
-        item.hits < item.hitsMax && item.id != @_creep.id
+    if @_creep.memory.targetId
+      @target = Game.getObjectById @_creep.memory.minerId
+    else
+      @target = @_creep.pos.findNearest Game.MY_CREEPS,
+        filter: (item) =>
+          item.hits < item.hitsMax and
+            item.id != @_creep.id and
+            item.id not in _.chain Game.creeps
+                    .filter (creep) -> creep.memory.targetId?
+                    .map (creep) -> creep.memory.targetId
+                    .value()
 
-    for t in targets when Creep().GetNameType(t) in ['Guard', 'Archer', 'Hybrid']
-      target = t
-      break
+    if not @target?
+      @_creep.memory.targetId = 0
 
-    if not target?
-      target = targets[0]
-
-    target
+    @target
 
   GetTargetToFollow: ->
-    @_creep.pos.findNearest Game.MY_CREEPS,
+    @target = @_creep.pos.findNearest Game.MY_CREEPS,
       filter: (item) ->
         Creep().GetNameType(item.name) in ['Guard', 'Archer', 'Hybrid']
+
+  # GetTargetToAttack: ->
+  #   Game.getObjectById Memory.target
 
 module.exports = Healer

@@ -4,12 +4,18 @@ module.exports = ->
   class Defender extends Creep()
 
     Tick: ->
-      if Memory.target?
-        if not (target = @DeserializeTarget Memory.target, Game.HOSTILE_CREEPS)
+      @_creep.memory.targetId? || @_creep.memory.targetId = 0
+
+      if @_creep.hits < @_creep.hitsMax and not @_creep.memory.targetId
+        @GetTarget()
+
+      if @_creep.memory.targetId or Memory.target
+        if not (@target = Game.getObjectById(@_creep.memory.targetId || Memory.target))
+          @_creep.memory.targetId = null
           return @GoHome()
 
-        @MoveTo target
-        @Attack target
+        @MoveTo @target
+        @Attack @target
 
       else
         @GoHome()
@@ -26,11 +32,8 @@ module.exports = ->
       else
         super()
 
+    GetTarget: ->
+      @target = @_creep.memory.targetId = @_creep.pos.findNearest(Game.HOSTILE_CREEPS)?.id
+
     @GetGlobalTarget: ->
-      target = Game.spawns.Spawn1.pos.findNearest Game.HOSTILE_CREEPS
-
-      if not target?
-        Memory.target = null
-        return
-
-      Memory.target = target.id
+      Memory.target = Game.spawns.Spawn1.pos.findNearest(Game.HOSTILE_CREEPS)?.id

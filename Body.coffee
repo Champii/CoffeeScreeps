@@ -36,25 +36,30 @@ module.exports = ->
     @GetBody: (type) =>
       t = @type || type
 
-      bodies =
-        Miner:
-          body: [Game.MOVE, Game.MOVE, Game.WORK, Game.WORK, Game.WORK]
-          next: [Game.WORK]
-        Transporter:
-          body: [Game.MOVE, Game.MOVE, Game.CARRY, Game.CARRY, Game.CARRY]
-          next: [Game.CARRY]
-        Guard:
-          body: [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.MOVE, Game.ATTACK]
-          next: [Game.MOVE, Game.ATTACK]
-        Healer:
-          body: [Game.TOUGH, Game.HEAL, Game.MOVE, Game.MOVE, Game.MOVE]
-          next: [Game.MOVE, Game.HEAL]
-        Archer:
-          body: [Game.TOUGH, Game.TOUGH, Game.MOVE, Game.MOVE, Game.RANGED_ATTACK]
-          next: [Game.MOVE, Game.RANGED_ATTACK]
-        Hybrid:
-          body: [Game.TOUGH, Game.MOVE, Game.MOVE, Game.ATTACK, Game.RANGED_ATTACK]
-          next: [Game.MOVE, Game.RANGED_ATTACK]
-
       bodies[t]
 
+bodies =
+  Miner:
+    body: [Game.WORK, Game.WORK, Game.WORK, Game.WORK, Game.MOVE]
+    next: [Game.WORK]
+  Transporter:
+    body: [Game.CARRY, Game.CARRY, Game.MOVE, Game.MOVE]
+    next: [Game.CARRY]
+  SmallTransporter:
+    body: [Game.CARRY, Game.MOVE]
+    next: [Game.CARRY]
+  Guard:
+    body: [Game.MOVE, Game.ATTACK, Game.ATTACK]
+    next: [Game.MOVE, Game.ATTACK]
+  Healer:
+    body: [Game.MOVE, Game.HEAL, Game.MOVE, Game.HEAL, Game.MOVE]
+    next: [Game.MOVE, Game.HEAL]
+  Archer:
+    body: [Game.MOVE, Game.RANGED_ATTACK, Game.MOVE, Game.RANGED_ATTACK]
+    next: [Game.MOVE, Game.RANGED_ATTACK]
+  Engineer:
+    body: [Game.MOVE, Game.WORK, Game.WORK, Game.CARRY, Game.CARRY]
+    next: [Game.MOVE, Game.RANGED_ATTACK]
+  # Hybrid:
+  #   body: [Game.MOVE, Game.MOVE, Game.ATTACK, Game.RANGED_ATTACK]
+  #   next: [Game.MOVE, Game.RANGED_ATTACK]

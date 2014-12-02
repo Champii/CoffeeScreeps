@@ -1,7 +1,11 @@
 module.exports = ->
+
   class Creep extends Body()
 
-    constructor: (@name, @lvl) ->
+    # Defaults params are a hack
+    # allowing to set them in child,
+    # and permitting to avoid sending them to super()
+    constructor: (@name = @name, @lvl = @lvl) ->
       super()
 
       @_creep = Game.creeps[@name]
@@ -21,6 +25,7 @@ module.exports = ->
     MoveTo: (target) ->
       if @_creep.pos.isNearTo target
         return false
+
       if (res = @_creep.moveTo(target)) < 0
         return false
 
@@ -31,25 +36,15 @@ module.exports = ->
       @MoveTo target
       target
 
-    DeserializeTarget: (targetId, targetType) ->
-      target = @_creep.room.find(targetType,
-        filter:
-          id: targetId
-      )[0]
-
-      if not target
-        return false
-
-      target
-
     @CountCreeps: (type) ->
-      creeps = Game.spawns.Spawn1.room.find Game.MY_CREEPS
-
-      if not type
+      t = type || @type
+      if not t
         return creeps.length
 
+      creeps = Game.spawns.Spawn1.room.find Game.MY_CREEPS
+
       i = 0
-      for creep in creeps when creep.name[0] is type[0]
+      for creep in creeps when @GetNameType(creep.name) is type
         i++
 
       i
