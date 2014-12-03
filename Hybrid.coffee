@@ -2,6 +2,6 @@ Defender = require 'Defender'
 
 class Hybrid extends Defender()
 
-  @SetType 'Hybrid'
+Hybrid.Init()
 
 module.exports = Hybrid

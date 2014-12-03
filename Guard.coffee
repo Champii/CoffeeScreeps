@@ -2,6 +2,6 @@ Defender = require 'Defender'
 
 class Guard extends Defender()
 
-  @SetType 'Guard'
+Guard.Init()
 
 module.exports = Guard

@@ -11,7 +11,6 @@ class Main
     @InitCreeps()
 
   InitLvl: ->
-
     @lvl = 0
 
     for k in Game.structures when k.structureType is 'extension'

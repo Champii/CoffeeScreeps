@@ -39,12 +39,12 @@ module.exports = ->
     @CountCreeps: (type) ->
       t = type || @type
       if not t
-        return creeps.length
+        return Game.creeps.length
 
       creeps = Game.spawns.Spawn1.room.find Game.MY_CREEPS
 
       i = 0
-      for creep in creeps when @GetNameType(creep.name) is type
+      for creep in creeps when @GetNameType(creep.name) is t
         i++
 
       i

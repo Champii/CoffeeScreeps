@@ -2,8 +2,6 @@ Defender = require 'Defender'
 
 class Archer extends Defender()
 
-  @SetType 'Archer'
-
   Attack: (target) ->
     if (res = @_creep.pos.inRangeTo target, 3)
       super target
@@ -15,5 +13,7 @@ class Archer extends Defender()
       @_creep.move dir
     else if not @_creep.pos.inRangeTo target, 3
       @_creep.moveTo target
+
+Archer.Init()
 
 module.exports = Archer

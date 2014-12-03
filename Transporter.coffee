@@ -1,15 +1,11 @@
 _ = require 'lodash'
 
 Creep = require('Creep')
+Miner = require 'Miner'
 
 Memory.energyTarget? || Memory.energyTarget = null
 
-# FIXME: to put in Stategy
-nbByMiner = 2
-
 class Transporter extends Creep()
-
-  @SetType 'Transporter'
 
   constructor: (@name, @lvl) ->
     super()
@@ -32,6 +28,7 @@ class Transporter extends Creep()
     if @_creep.memory.minerId
       @miner = Game.getObjectById @_creep.memory.minerId
     else
+      nbByMiner = ~~(Transporter.CountCreeps() / Miner.CountCreeps()) + 1
       @miner = Game.spawns.Spawn1.pos.findNearest Game.MY_CREEPS,
         filter: (item) ->
           Creep().GetNameType(item.name) is 'Miner' and
@@ -62,5 +59,7 @@ class Transporter extends Creep()
 
   GoHome: ->
     @_creep.transferEnergy super()
+
+Transporter.Init()
 
 module.exports = Transporter

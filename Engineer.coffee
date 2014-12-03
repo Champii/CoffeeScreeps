@@ -1,12 +1,9 @@
 Creep = require 'Creep'
 
-
 class Engineer extends Creep()
 
-  @SetType 'Engineer'
-
-  constructor: (name, lvl) ->
-    super name, lvl
+  constructor: (@name, @lvl) ->
+    super()
     @_creep.memory.engineerState? || @_creep.memory.engineerState = 'harvest'
 
   Tick: ->
@@ -34,5 +31,7 @@ class Engineer extends Creep()
     if @site?
       @source = @site.pos.findNearest Game.SOURCES_ACTIVE
       console.log @source
+
+Engineer.Init()
 
 module.exports = Engineer

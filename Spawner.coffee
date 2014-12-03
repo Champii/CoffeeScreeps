@@ -52,25 +52,28 @@ order = [
   # 'Engineer'
   'Miner'
   'Transporter'
+  'Miner'
+  'Transporter'
   'Guard'
-  'Guard'
+  # 'Guard'
   'Healer'
   'Archer'
-  'SmallTransporter'
 ]
 
 maxPop = [
   # 2
-  2
-  4
-  10
+  5
+  10 #
   5 #
-  5
-  5
-  4 #
+  10
+  10
+  # 10 #
+  10
+  10
 ]
 
 module.exports = Spawner
+
 Creep = require('Creep')()
 Body = require('Body')()
 

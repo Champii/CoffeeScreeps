@@ -4,8 +4,6 @@ Creep = require 'Creep'
 
 class Miner extends Creep()
 
-  @SetType 'Miner'
-
   constructor: (@name, @lvl) ->
     super()
 
@@ -31,5 +29,7 @@ class Miner extends Creep()
       @_creep.memory.sourceId = @source.id
     else
       @_creep.memory.sourceId = 0
+
+Miner.Init()
 
 module.exports = Miner

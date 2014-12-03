@@ -20,6 +20,7 @@ module.exports = ->
       else
         @GoHome()
 
+
     Attack: (target) ->
       if @_creep.getActiveBodyparts Game.ATTACK
         @_creep.attack target

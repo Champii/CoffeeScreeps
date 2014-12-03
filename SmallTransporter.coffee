@@ -4,6 +4,6 @@ Transporter = require 'Transporter'
 
 class SmallTransporter extends Transporter
 
-  @SetType 'SmallTransporter'
+SmallTransporter.Init()
 
 module.exports = SmallTransporter

@@ -5,8 +5,6 @@ Creep = require 'Creep'
 
 class Healer extends Defender()
 
-  @SetType 'Healer'
-
   constructor: (@name, @lvl) ->
     super()
 
@@ -50,5 +48,7 @@ class Healer extends Defender()
 
   # GetTargetToAttack: ->
   #   Game.getObjectById Memory.target
+
+Healer.Init()
 
 module.exports = Healer
