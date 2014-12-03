@@ -8,7 +8,7 @@ Also, don't hesitate to pull request !
 
 Have a nice game ;)
 
-Average score on survival: 600
+High score on survival: 602/718/919
 
 Flags :
 'Rely': used by every Defender as raly point.

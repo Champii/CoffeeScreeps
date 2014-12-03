@@ -45,7 +45,7 @@ bodies =
     body: [Game.WORK, Game.WORK, Game.WORK, Game.WORK, Game.MOVE]
     next: [Game.WORK]
   Transporter:
-    body: [Game.CARRY, Game.CARRY, Game.CARRY, Game.MOVE, Game.MOVE]
+    body: [Game.CARRY, Game.CARRY, Game.MOVE, Game.MOVE, Game.MOVE]
     next: [Game.CARRY]
   SmallTransporter:
     body: [Game.CARRY, Game.MOVE]
@@ -57,7 +57,7 @@ bodies =
     body: [Game.MOVE, Game.HEAL, Game.MOVE, Game.HEAL]
     next: [Game.MOVE, Game.HEAL]
   Archer:
-    body: [Game.MOVE, Game.RANGED_ATTACK, Game.MOVE, Game.RANGED_ATTACK, Game.RANGED_ATTACK]
+    body: [Game.MOVE, Game.RANGED_ATTACK, Game.MOVE, Game.RANGED_ATTACK]
     next: [Game.MOVE, Game.RANGED_ATTACK]
   Engineer:
     body: [Game.MOVE, Game.WORK, Game.WORK, Game.CARRY, Game.CARRY]
