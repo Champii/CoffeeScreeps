@@ -1,7 +1,7 @@
-Screeps
+CoffeeScreeps
 =======
 
-Repo to hold my screeps scripts
+Repo to hold my Coffee screeps scripts
 
 Feel free to use, modify and distribute them.
 Also, don't hesitate to pull request !
