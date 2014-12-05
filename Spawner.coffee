@@ -1,18 +1,21 @@
+strategy = require 'currentStrategy'
 
 class Spawner
 
-  constructor: (@name) ->
+  constructor: (@name, @lvl) ->
     @_spawn = Game.spawns[@name]
+
+    @_spawn.memory.nextCreepIdx?      || @_spawn.memory.nextCreepIdx = 0
 
     if @ModeratePopulation()
       @TrySpawn()
 
   ModeratePopulation: ->
     count = 0
-    while Creep.CountCreeps(order[Memory.nextCreepIdx]) >= maxPop[Memory.nextCreepIdx]
-      Memory.nextCreepIdx++
-      if Memory.nextCreepIdx >= order.length
-        Memory.nextCreepIdx = 0
+    while Creep.CountCreeps(strategy.GetNextCreep(@_spawn.memory.nextCreepIdx).type) >= strategy.GetNextCreep(@_spawn.memory.nextCreepIdx).maxPop
+      @_spawn.memory.nextCreepIdx++
+      if @_spawn.memory.nextCreepIdx >= strategy.orderLength
+        @_spawn.memory.nextCreepIdx = 0
         count++
         # Avoid infinite loop
         if count >= 2
@@ -20,21 +23,22 @@ class Spawner
     true
 
   TrySpawn: ->
+    nextCreepType = strategy.GetNextCreep(@_spawn.memory.nextCreepIdx).type
     if not @_spawn.spawning
-      if @HasEnergy(order[Memory.nextCreepIdx]) && @Spawn(order[Memory.nextCreepIdx])
-        Memory.nextCreepIdx++
-        if Memory.nextCreepIdx >= order.length
-          Memory.nextCreepIdx = 0
+      if @HasEnergy(nextCreepType) && @Spawn(nextCreepType)
+        @_spawn.memory.nextCreepIdx++
+        if @_spawn.memory.nextCreepIdx >= strategy.orderLength
+          @_spawn.memory.nextCreepIdx = 0
 
   Spawn: (type) ->
-    if (res = @_spawn.createCreep(Body.GetBody(type).body, type + Memory[type])) is type + Memory[type]
+    if (res = @_spawn.createCreep(Body.GetBody(type, @lvl), type + Memory[type])) is type + Memory[type]
       Memory[type]++
       true
     else
       false
 
   HasEnergy: (type) ->
-    Body.GetBodyCost(type) <= @_spawn.energy
+    Body.GetBodyCost(type, @lvl) <= @_spawn.energy
 
 #Set memory to know next creep name
 Memory.Miner?             || Memory.Miner = 0
@@ -45,32 +49,6 @@ Memory.Archer?            || Memory.Archer = 0
 Memory.Hybrid?            || Memory.Hybrid = 0
 Memory.Engineer?          || Memory.Engineer = 0
 Memory.SmallTransporter?  || Memory.SmallTransporter = 0
-
-Memory.nextCreepIdx?      || Memory.nextCreepIdx = 0
-
-order = [
-  # 'Engineer'
-  'Miner'
-  'Transporter'
-  'Miner'
-  'Transporter'
-  'Guard'
-  # 'Guard'
-  'Healer'
-  'Archer'
-]
-
-maxPop = [
-  # 2
-  5
-  10
-  5 #
-  10 #
-  10
-  # 10 #
-  5
-  10
-]
 
 module.exports = Spawner
 

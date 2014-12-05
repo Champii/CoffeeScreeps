@@ -1,3 +1,4 @@
+bus = require 'Bus'
 Creep = require('Creep')
 
 module.exports = ->
@@ -5,6 +6,9 @@ module.exports = ->
 
     Tick: ->
       @_creep.memory.targetId? || @_creep.memory.targetId = 0
+
+      # if @_creep.hits < @_creep.hitsMax / 2
+      #   bus.emit 'medic', @
 
       if @_creep.hits < @_creep.hitsMax and not @_creep.memory.targetId
         @GetTarget()

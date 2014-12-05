@@ -8,6 +8,9 @@ class Archer extends Defender()
 
   MoveTo: (target) ->
     # TODO: better stay away of enemy
+    if not target
+      return
+
     if @_creep.pos.inRangeTo target, 2
       dir = ((@_creep.pos.getDirectionTo(target) + 3) % 8) + 1
       @_creep.move dir

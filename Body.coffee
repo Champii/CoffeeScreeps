@@ -1,67 +1,42 @@
+strategy = require 'currentStrategy'
+
 module.exports = ->
   class Body
 
-
     constructor: ->
 
-      {body: @body, next: @nextBody} = Body.GetBody @type
-
-      for i in [0...@lvl]
-        @body.push @nextBody
-
-      @cost = Body.GetBodyCost @type
+      @body = Body.GetBody @type, @lvl
+      @cost = Body.GetBodyCost @type, @lvl
 
     @Init: ->
       @type = @name
       @::type = @type
 
-    @GetBodyCost: (type) ->
-      t = type || @name
-
-      bodyCosts = {}
-      bodyCosts[Game.MOVE] = 50
-      bodyCosts[Game.WORK] = 20
-      bodyCosts[Game.CARRY] = 50
-      bodyCosts[Game.ATTACK] = 100
-      bodyCosts[Game.RANGED_ATTACK] = 150
-      bodyCosts[Game.HEAL] = 200
-      bodyCosts[Game.TOUGH] = 5
-
+    @GetBodyCost: (type = @name, lvl = 0) ->
+      b = Body.GetBody(type, lvl)
       res = 0
 
-      for i in Body.GetBody(t).next
+      for i in b
         res += bodyCosts[i]
+
+      # console.log 'BodyCost', res
 
       res
 
-    @GetBody: (type) ->
-      t = type || @name
+    @GetBody: (type = @name, lvl = 0) ->
+      b = strategy.GetBody(type)
+      res = []
+      res.push part for part in b.body
+      if b.next.length
+        res.push b.next[i % b.next.length] for i in [0...lvl]
 
-      bodies[t]
+      res
 
-
-bodies =
-  Miner:
-    body: [Game.WORK, Game.WORK, Game.WORK, Game.WORK, Game.MOVE]
-    next: [Game.WORK]
-  Transporter:
-    body: [Game.CARRY, Game.CARRY, Game.MOVE, Game.MOVE, Game.MOVE]
-    next: [Game.CARRY]
-  SmallTransporter:
-    body: [Game.CARRY, Game.MOVE]
-    next: [Game.CARRY]
-  Guard:
-    body: [Game.MOVE, Game.ATTACK, Game.MOVE, Game.ATTACK]
-    next: [Game.MOVE, Game.ATTACK]
-  Healer:
-    body: [Game.MOVE, Game.HEAL, Game.MOVE, Game.HEAL]
-    next: [Game.MOVE, Game.HEAL]
-  Archer:
-    body: [Game.MOVE, Game.RANGED_ATTACK, Game.MOVE, Game.RANGED_ATTACK]
-    next: [Game.MOVE, Game.RANGED_ATTACK]
-  Engineer:
-    body: [Game.MOVE, Game.WORK, Game.WORK, Game.CARRY, Game.CARRY]
-    next: [Game.MOVE, Game.RANGED_ATTACK]
-  # Hybrid:
-  #   body: [Game.MOVE, Game.MOVE, Game.ATTACK, Game.RANGED_ATTACK]
-  #   next: [Game.MOVE, Game.RANGED_ATTACK]
+bodyCosts = {}
+bodyCosts[Game.MOVE] = 50
+bodyCosts[Game.WORK] = 20
+bodyCosts[Game.CARRY] = 50
+bodyCosts[Game.ATTACK] = 100
+bodyCosts[Game.RANGED_ATTACK] = 150
+bodyCosts[Game.HEAL] = 200
+bodyCosts[Game.TOUGH] = 5

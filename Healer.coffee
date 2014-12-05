@@ -1,5 +1,6 @@
 _ = require 'lodash'
 
+bus = require 'Bus'
 Defender = require 'Defender'
 Creep = require 'Creep'
 
@@ -10,16 +11,20 @@ class Healer extends Defender()
 
     @_creep.memory.targetId? || @_creep.memory.targetId = 0
 
+    bus.on 'medic', (creep) =>
+      if not @_creep.memory.targetId
+        @_creep.memory.targetId = creep._creep.id
+
   Tick: ->
-    target = @GetTargetToHeal() || @GetTargetToFollow()
+    @GetTargetToHeal() || @GetTargetToFollow()
 
     # enemy = @GetTargetToAttack()
     # if enemy?
     #   @Attack enemy
 
-    if target && @_creep.getActiveBodyparts Game.HEAL
-      @MoveTo target
-      @Work target
+    if @target && @_creep.getActiveBodyparts Game.HEAL
+      @MoveTo @target
+      @Work @target
     else
       @GoHome()
 

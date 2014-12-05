@@ -8,7 +8,7 @@ Also, don't hesitate to pull request !
 
 Have a nice game ;)
 
-High score on survival: 602/718/919
+High score on survival: 2859/2547/2905
 
 Flags :
 'Rely': used by every Defender as raly point.
@@ -23,3 +23,4 @@ Efficient building system
 Better healers
 Better run away system for Archers
 Dynamic flag positioning
+Ratio based spawning

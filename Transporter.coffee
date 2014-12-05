@@ -23,6 +23,8 @@ class Transporter extends Creep()
         @Work @target
     else
       @GoHome()
+      if @_creep.energy
+        @GoHome()
 
   FindTarget: ->
     if @_creep.memory.minerId
@@ -57,8 +59,25 @@ class Transporter extends Creep()
 
     @target
 
-  GoHome: ->
-    @_creep.transferEnergy super()
+  GoHome: (max = 0) ->
+    ext = @_creep.pos.findNearest Game.MY_STRUCTURES,
+      filter: (struct) ->
+        struct.structureType is Game.STRUCTURE_EXTENSION and
+          struct.energy < struct.energyCapacity
+
+    if ext?
+      extPath = @_creep.pos.findPathTo ext
+
+    if (spawn = @_creep.pos.findNearest(Game.MY_SPAWNS))?
+      spawnPath = @_creep.pos.findPathTo spawn
+
+    if spawnPath? and extPath? and (spawnPath.length >= extPath.length or spawn.energy is spawn.energyCapacity)
+      @MoveTo ext
+      @_creep.transferEnergy ext
+      if @_creep.energy and max < 3
+        @GoHome max + 1
+    else
+      @_creep.transferEnergy super()
 
 Transporter.Init()
 
