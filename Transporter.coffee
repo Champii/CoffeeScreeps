@@ -11,9 +11,10 @@ class Transporter extends Creep()
     super()
 
     @_creep.memory.minerId? || @_creep.memory.minerId = 0
+    @_creep.memory.state? || @_creep.memory.state = 'pickup'
 
   Tick: ->
-    if @_creep.energy < @_creep.energyCapacity
+    if @_creep.memory.state is 'pickup'
       if not @FindTarget() and not @miner?
         return @GoHome()
       else if @miner? and not @target?
@@ -21,10 +22,12 @@ class Transporter extends Creep()
       else
         @MoveTo @target
         @Work @target
-    else
+        if @_creep.energy is @_creep.energyCapacity
+          @_creep.memory.state = 'home'
+    else if @_creep.memory.state is 'home'
       @GoHome()
-      if @_creep.energy
-        @GoHome()
+      if not @_creep.energy
+        @_creep.memory.state = 'pickup'
 
   FindTarget: ->
     if @_creep.memory.minerId
@@ -71,13 +74,26 @@ class Transporter extends Creep()
     if (spawn = @_creep.pos.findNearest(Game.MY_SPAWNS))?
       spawnPath = @_creep.pos.findPathTo spawn
 
-    if spawnPath? and extPath? and (spawnPath.length >= extPath.length or spawn.energy is spawn.energyCapacity)
+    # if spawnPath? and extPath? and (spawnPath.length >= extPath.length or spawn.energy is spawn.energyCapacity)
+    if ext? and ext.energy < ext.energyCapacity
       @MoveTo ext
       @_creep.transferEnergy ext
       if @_creep.energy and max < 3
         @GoHome max + 1
     else
       @_creep.transferEnergy super()
+
+  @RealocAll: ->
+    nbByMiner = ~~(Transporter.CountCreeps() / Miner.CountCreeps()) + 1
+    count = {}
+    for name, creep of Game.creeps when Creep().GetNameType(creep.name) is 'Transporter'
+      if creep.memory.minerId and not count[creep.memory.minerId]?
+        count[creep.memory.minerId] = 1
+      else if creep.memory.minerId
+        count[creep.memory.minerId]++
+      if count[creep.memory.minerId] > nbByMiner
+        console.log 'Realocated'
+        creep.memory.minerId = 0
 
 Transporter.Init()
 

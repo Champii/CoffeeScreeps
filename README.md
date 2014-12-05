@@ -16,8 +16,6 @@ Flags :
 TODO
 ====
 
-Strategies
-LvlUP
 Global Memory object
 Efficient building system
 Better healers

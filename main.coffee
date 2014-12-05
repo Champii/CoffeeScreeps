@@ -1,14 +1,21 @@
 Spawner = require 'Spawner'
 Creep = require('Creep')()
 Defender = require('Defender')()
+Transporter = require 'Transporter'
 
 class Main
 
   constructor: ->
+    @GarbageCollector()
     @InitLvl()
     @InitTarget()
     @InitSpawners()
     @InitCreeps()
+
+  GarbageCollector: ->
+    for name, creep of Memory.creeps
+      if not Game.creeps[name]?
+        delete Memory.creeps[name]
 
   InitLvl: ->
     @lvl = 0
@@ -20,6 +27,7 @@ class Main
     # console.log 'lvl', @lvl
 
   InitTarget: ->
+    Transporter.RealocAll()
     Defender.GetGlobalTarget()
 
   InitSpawners: ->

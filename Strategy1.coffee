@@ -11,12 +11,12 @@ class Strategy1 extends Strategy
         next: []
       '1':
         type: 'Transporter'
-        maxPop: 15
+        maxPop: 20
         body: [Game.CARRY, Game.CARRY, Game.CARRY, Game.MOVE, Game.MOVE]
-        next: [Game.CARRY, Game.MOVE]
+        next: []
       '4':
         type: 'Guard'
-        maxPop: 20
+        maxPop: 10
         body: [Game.TOUGH, Game.MOVE, Game.ATTACK, Game.MOVE, Game.ATTACK]
         next: [Game.MOVE, Game.ATTACK]
       '5':
@@ -26,12 +26,12 @@ class Strategy1 extends Strategy
         next: [Game.MOVE, Game.HEAL]
       '6':
         type: 'Archer'
-        maxPop: 20
+        maxPop: 10
         body: [Game.TOUGH, Game.MOVE, Game.RANGED_ATTACK, Game.MOVE, Game.RANGED_ATTACK]
         next: [Game.MOVE, Game.RANGED_ATTACK]
       '7':
         type: 'Engineer'
-        maxPop: 2
+        maxPop: 1
         body: [Game.MOVE, Game.WORK, Game.WORK, Game.CARRY, Game.CARRY]
         next: [Game.MOVE, Game.CARRY]
       # '8':
