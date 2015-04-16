@@ -34,6 +34,27 @@ class Strategy1 extends Strategy
         maxPop: 1
         body: [Game.MOVE, Game.WORK, Game.WORK, Game.CARRY, Game.CARRY]
         next: [Game.MOVE, Game.CARRY]
+      '8':
+        type: 'GladWarrior'
+        maxPop: 1
+        body: [Game.TOUGH, Game.MOVE, Game.ATTACK, Game.MOVE, Game.ATTACK]
+        next: [Game.MOVE, Game.ATTACK]
+      '9':
+        type: 'GladRanger'
+        maxPop: 1
+        body: [Game.TOUGH, Game.MOVE, Game.ATTACK, Game.MOVE, Game.ATTACK]
+        next: [Game.MOVE, Game.ATTACK]
+      '10':
+        type: 'GladHealer'
+        maxPop: 1
+        body: [Game.TOUGH, Game.MOVE, Game.ATTACK, Game.MOVE, Game.ATTACK]
+        next: [Game.MOVE, Game.ATTACK]
+      '11':
+        type: 'GladTough'
+        maxPop: 1
+        body: [Game.TOUGH, Game.MOVE, Game.ATTACK, Game.MOVE, Game.ATTACK]
+        next: [Game.MOVE, Game.ATTACK]
+
       # '8':
       #   type: 'SmallTransporter'
       #   maxPop: 10

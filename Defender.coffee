@@ -41,4 +41,7 @@ module.exports = ->
       @target = @_creep.memory.targetId = @_creep.pos.findNearest(Game.HOSTILE_CREEPS)?.id
 
     @GetGlobalTarget: ->
+      if not Game.spawns.Spawn1?
+        return Memory.target = false
+
       Memory.target = Game.spawns.Spawn1.pos.findNearest(Game.HOSTILE_CREEPS)?.id

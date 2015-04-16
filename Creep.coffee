@@ -37,6 +37,10 @@ module.exports = ->
       target
 
     @CountCreeps: (type) ->
+      if not Game.spawns.Spawn1?
+        return 0
+
+
       t = type || @type
       if not t
         return Game.creeps.length
@@ -50,13 +54,18 @@ module.exports = ->
       i
 
     @Get: (name, lvl) ->
-      new (require(@GetNameType(name)))(name, lvl)
+      Type = require(@GetNameType(name))
+
+      if Type?
+        new Type(name, lvl)
+      null
 
     @GetNameType: (name) ->
       isNumeric = (n) -> !isNaN(parseFloat(n)) and isFinite(n)
       for c, i in name
         if isNumeric c
           return name[0...i]
+      name
 
 
 Body = require('Body')
